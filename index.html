@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,8 +8,47 @@
     <title>Excel Clone</title>
     <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
-    <h1 id="current-cell"></h1>
+    <h1 id="current-cell">No Cell</h1>
+    <button id="bold-btn">B</button>
+    <button id="italics-btn">I</button>
+    <button id="underline-btn">U</button>
+
+    <label for="text-color">Text</label>
+    <input type="color" id="text-color">
+    <label for="bg-color">BG</label>
+    <input type="color" id="bg-color">
+
+    <br />
+    <br />
+    <button id="left-align">Left Align</button>
+    <button id="center-align">Center Align</button>
+    <button id="right-align">Right Align</button>
+    <br />
+    <br />
+
+    <select id="font-size">
+        <option value="14px">14</option>
+        <option value="16px">16</option>
+        <option value="18px">18</option>
+    </select>
+
+    <select id="font-family">
+        <option value="serif">Serif</option>
+        <option value="sans-serif">Sans-serif</option>
+        <option value="monospace">Monospace</option>
+        <option value="cursive">Cursive</option>
+        <option value="fantasy">Fantasy</option>
+    </select>
+    <br />
+    <br />
+
+    <button id="cut-btn">Cut</button>
+    <button id="copy-btn">Copy</button>
+    <button id="paste-btn">Paste</button>
+    <br />
+    <br />
     <table class="my-table">
         <thead>
             <tr id="table-heading-row">
@@ -19,4 +59,5 @@
     </table>
     <script src="./script.js"></script>
 </body>
+
 </html>

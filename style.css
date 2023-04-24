@@ -1,6 +1,19 @@
-table{
-    border-collapse: collapse;
+body{
+    width: 100vw;
 }
-th,td{
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    overflow-x: auto;
+}
+
+th,
+td {
     border: 1px solid black;
+    width: 180px;
+}
+
+td:focus{
+    outline: none;
 }
