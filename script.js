@@ -26,7 +26,11 @@ const copyBtn = document.getElementById("copy-btn");
 const pasteBtn = document.getElementById("paste-btn");
 
 //created a matrix so that we can update the every cell element data into the matrix
-const matrix = new Array(rows);
+let matrix = new Array(rows);
+let numSheets = 1;
+let arrMatrix = [matrix];
+let currSheetNum = 1;
+
 for (let i = 0; i < rows; i++) {
     matrix[i] = new Array(columns);
     for (let j = 0; j < columns; j++) {
@@ -175,6 +179,13 @@ function updateJson(cell) {
     var j = id[0].charCodeAt(0) - 65;
     matrix[i][j] = json;
     // console.log("updated matrix", matrix);
+
+    // if (arrMatrix.length == numSheets) {
+    //     arrMatrix[currSheetNum - 1] = matrix;
+    // }else{
+    //     arrMatrix.push(matrix);
+    // }
+    console.log("ArrMatrix", arrMatrix);
 }
 
 function downloadJson() {
@@ -213,7 +224,7 @@ function readJsonFile(event) {
             try {
                 const jsonData = JSON.parse(fileContent);
                 console.log("matrix2", jsonData);
-                // matrix = jsonData;
+                matrix = jsonData;
                 jsonData.forEach((row) => {
                     row.forEach((cell) => {
                         if (cell.id) {
@@ -232,3 +243,59 @@ function readJsonFile(event) {
         reader.readAsText(file);
     }
 }
+
+document.getElementById("add-sheet-btn").addEventListener("click", () => {
+    alert("Adding a new sheet...");
+    if(numSheets == 1){
+        var myArr = [matrix];
+        localStorage.setItem("ArrMatrix", JSON.stringify(myArr));
+    }else{
+        var localStorageArr = JSON.parse(localStorage.getItem("ArrMatrix"));
+        var myArr = [...localStorageArr,matrix];
+        localStorage.setItem("ArrMatrix", JSON.stringify(myArr));
+    }
+    
+    numSheets++;
+    currSheetNum = numSheets;
+    for (let i = 0; i < rows; i++) {
+        matrix[i] = new Array(columns);
+        for (let j = 0; j < columns; j++) {
+            matrix[i][j] = {};
+        }
+    }
+    
+    tbody.innerHTML = ``;
+    for (let row = 0; row < rows; row++) {
+        var tr = document.createElement("tr");
+        var th = document.createElement("th");
+        th.innerText = row + 1;
+        tr.appendChild(th);
+        for (let col = 0; col < columns; col++) {
+            let td = document.createElement("td");
+            td.setAttribute("contenteditable", "true");
+            td.setAttribute("spellcheck", "false");
+            td.setAttribute("id", `${String.fromCharCode(65 + col)}${row + 1}`);
+            td.addEventListener("focus", (event) => onFocusFnc(event));
+            td.addEventListener("input", (event) => onInputFnc(event));
+            tr.appendChild(td);
+        }
+        //append the row into body
+        tbody.appendChild(tr);
+    }
+    document.getElementById("sheet-num").innerText = "sheet" + currSheetNum;
+});
+
+document.getElementById("sheet-1").addEventListener("click", () => {
+    var myArr = JSON.parse(localStorage.getItem("ArrMatrix"));
+    let tableData = myArr[0];
+    matrix = tableData;
+    tableData.forEach((row) => {
+        row.forEach((cell) => {
+            if (cell.id) {
+                var myCell = document.getElementById(cell.id);
+                myCell.innerText = cell.text;
+                myCell.style.cssText = cell.style;
+            }
+        });
+    });
+})
